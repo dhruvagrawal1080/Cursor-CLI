@@ -11,7 +11,7 @@ Cursor CLI is an interactive, agentic AI coding assistant for your terminal. It 
    ```
 
 3. **Set up your environment variables:**
-   -Create a `.env` file in the project root with your LLM API keys:
+   - Create a `.env` file in the project root with your LLM API keys:
      ```env
      GOOGLE_API_KEY=your_api_key
      ```
