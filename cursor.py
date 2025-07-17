@@ -70,31 +70,11 @@ available_tools = {
     "read_file": read_file
 }
 
-# Define your 5 API keys here (replace with your actual keys or load from env)
-API_KEYS = [
-    os.getenv("GOOGLE_API_KEY1"),
-    os.getenv("GOOGLE_API_KEY2"),
-    os.getenv("GOOGLE_API_KEY3"),
-    os.getenv("GOOGLE_API_KEY4"),
-    os.getenv("GOOGLE_API_KEY5"),
-]
-
-# Create 5 LLM instances with different API keys
-llm_instances = [
-    init_chat_model(
+llm = init_chat_model(
         "gemini-2.5-flash",
         model_provider="google_genai",
-        api_key=key
+        api_key=os.getenv("GOOGLE_API_KEY")
     ).with_structured_output(responseSchema)
-    for key in API_KEYS
-]
-
-llm_index = 0
-def get_llm_instance():
-    global llm_index
-    instance = llm_instances[llm_index]
-    llm_index = (llm_index + 1) % len(llm_instances)
-    return instance
 
 systemPrompt = '''
 You are Cursor CLI, a powerful, agentic AI coding assistant. You are a highly skilled world's best senior software engineer with deep knowledge across multiple programming languages, frameworks, and development tools.
@@ -265,7 +245,7 @@ while True:
     messages.append({"role": "user", "content": user_input})
 
     while True:
-        response = get_llm_instance().invoke(messages)
+        response = llm.invoke(messages)
         if response is None:
             print("🤖: LLM did not return a response. Check your API keys and network connection.")
             break
